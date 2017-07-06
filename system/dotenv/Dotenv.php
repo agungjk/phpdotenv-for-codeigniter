@@ -25,6 +25,9 @@ class Dotenv
 
     public function __construct($path, $file = '.env')
     {
+        if ($file == '.env') {
+            $file = '.env.' . strtolower(ENVIRONMENT);
+        }
         $this->filePath = $this->getFilePath($path, $file);
     }
 

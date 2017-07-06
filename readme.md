@@ -1,67 +1,62 @@
-PHP dotenv for codeigniter
-==========================
+# PHP dotenv for codeigniter
+> Autodetect environment type and load variables from `.env` to `getenv()` automagically.
 
-Loads environment variables from `.env` to `getenv()` automagically.
+This is a PHP version of the original [Ruby dotenv](https://github.com/bkeepers/dotenv).
 
-This is a PHP version of the original [Ruby
-dotenv](https://github.com/bkeepers/dotenv).
+![](cover.png)
 
-Why .env?
----------
-**You should never store sensitive credentials in your code**. Storing
-[configuration in the environment](http://www.12factor.net/config) is one of
-the tenets of a [twelve-factor app](http://www.12factor.net/). Anything that is
-likely to change between deployment environments – such as database credentials
-or credentials for 3rd party services – should be extracted from the
-code into environment variables.
+## Manual Installation without Composer
+1. Copy folder **system** to your codeigniter projects.
+2. Add this code to your codeigniter index.php before codeigniter core loaded (before this text "* LOAD THE BOOTSTRAP FILE") :
+    ```php
+		/*
+		 * --------------------------------------------------------------------
+		 * LOAD PHP DOT ENV FILE
+		 * --------------------------------------------------------------------
+		 *
+		 * And away we go...
+		 *
+		 */
+		require_once BASEPATH . 'dotenv/autoloader.php';
+		
+		$dotenv = new Dotenv\Dotenv(__DIR__);
+		$dotenv->load();
+    ```
 
-Basically, a `.env` file is an easy way to load custom configuration
-variables that your application needs without having to modify .htaccess
-files or Apache/nginx virtual hosts. This means you won't have to edit
-any files outside the project, and all the environment variables are
-always set no matter how you run your project - Apache, Nginx, CLI, and
-even PHP 5.4's built-in webserver. It's WAY easier than all the other
-ways you know of to set environment variables, and you're going to love
-it.
+## Configuration
+1. Create **.env** according your environment by copy file **.env.example** for database configuration and the other configuration. 
+Example : **.env.development**, **.env.testing**, **.env.production**
 
-* NO editing virtual hosts in Apache or Nginx
-* NO adding `php_value` flags to .htaccess files
-* EASY portability and sharing of required ENV values
-* COMPATIBLE with PHP's built-in web server and CLI runner
-
-
-Manual Installation without Composer
-------------------------------------
-- copy folder "system" to your codeigniter projects
-
-- add this code to your codeigniter index.php before codeigniter core loaded 
-(before this text "* LOAD THE BOOTSTRAP FILE")
+2. Load configuration, in file **application/config/database.php** change to this configuration
 ```php
-/*
- * --------------------------------------------------------------------
- * LOAD PHP DOT ENV FILE
- * --------------------------------------------------------------------
- *
- * And away we go...
- *
- */
-require_once BASEPATH . 'dotenv/autoloader.php';
-
-$dotenv = new Dotenv\Dotenv(__DIR__);
-$dotenv->load();
+	$db['default']['hostname'] = getenv('DB_HOST');
+	$db['default']['username'] = getenv('DB_USERNAME');
+	$db['default']['password'] = getenv('DB_PASSWORD');
+	$db['default']['database'] = getenv('DB_DATABASE');
+	$db['default']['dbdriver'] = getenv('DB_CONNECTION');
 ```
+3. Add ".env" to your .gitignore file
+4. It will be running, thank you
 
-- in file "application/config/database.php" change to this configuration
-```php
-$db['default']['hostname'] = getenv('DB_HOST');
-$db['default']['username'] = getenv('DB_USERNAME');
-$db['default']['password'] = getenv('DB_PASSWORD');
-$db['default']['database'] = getenv('DB_DATABASE');
-$db['default']['dbdriver'] = getenv('DB_CONNECTION');
-```
+## Release History
 
-- create ".env" by copy file ".env.example" for database configuration and the other configuration
+* 0.1.1
+    * CHANGE: Autodetect environment & Update Readme
+* 0.1.0
+    * Initial version
 
-- add ".env" to your .gitignore file
+## Meta
 
-- and it will be running, thank you
+Agung Jati Kusumo – [@its_agungjk](https://twitter.com/its_agungjk) – agungjk.social@gmail.com
+
+Distributed under the MIT license. See ``LICENSE`` for more information.
+
+[https://github.com/agungjk/phpdotenv-for-codeigniter](https://github.com/agungjk/phpdotenv-for-codeigniter)
+
+## Contributing
+
+1. Fork it (<https://github.com/agungjk/phpdotenv-for-codeigniter/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
